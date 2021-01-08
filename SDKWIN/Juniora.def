@@ -1,0 +1,87 @@
+; Project: junior.dll
+; Module : junior.def
+
+LIBRARY    JUNIOR
+
+DESCRIPTION 'JUNIOR - Hardware interface functions for Junior'
+
+EXETYPE WINDOWS
+
+STUB	'WINSTUB.EXE'
+
+CODE	MOVEABLE DISCARDABLE PRELOAD
+;DATA	FIXED    SINGLE      PRELOAD
+DATA	MOVEABLE SINGLE      PRELOAD
+
+HEAPSIZE  6144
+
+;IMPORTS
+;;    __MyD000h = KERNEL.__D000h
+;    KERNEL.__D000h
+
+EXPORTS
+    WEP 			@1	RESIDENTNAME
+    JUN_Initialize		@2	;Load config file and initialize registers.
+    JUN_Exit			@3	;Save to config file and reset registers.
+    JUN_set_display_mode	@4	;Set display Computer/Overlay mode.
+    JUN_enable_vert_sync_int	@5	;Enable vertical sync. interrup.
+    JUN_external_video_exist	@6	;Check external vide exist.
+    JUN_get_TVsystem_type	@7	;Get the TV system type(video format NTSC/PAL).
+    JUN_vert_sync_int_occur	@8	;Get Vert. sync. interrupt occur time.
+    JUN_junior_exist		@9	;Check junior  card exist.
+    JUN_during_vert_sync_period @10	;Check now is in Vsync period.
+    JUN_set_color_key		@11	;Set color key.
+    JUN_set_card_id		@12	;Set junior card ID_No.
+    JUN_init_ramdac_entry	@13	;Initialize ramdac.
+    JUN_set_scan_mode		@14	;Set scan mode to OVERSCAN/UNDERSCAN.
+    JUN_clear_TVscreen		@15	;Clear TV screen
+    JUN_set_TVscreen_color	@16	;Set TV screen to a specified color
+    JUN_draw_point		@17	;Draw a point in video memory directly.
+    JUN_draw_line		@18	;Draw one line in video memory directly.
+    JUN_draw_rect		@19	;Draw a rect in video memory directly.
+    JUN_draw_color_bar		@20	;Draw color bar in video memory directly.
+    JUN_draw_circle		@21	;Draw a circle in video memory directly.
+    JUN_draw_ellipse		@22	;Draw a ellipse in video memory directly.
+    JUN_putchar 		@23	;Put a char to video memory directly.
+    JUN_putstring		@24	;Put a stringr to video memory directly.
+    JUN_ReadImageRect		@25	;Read a specified rect from video memory.
+    JUN_WriteImageRect		@26	;Write a specified rect to video memory.
+    JUN_ClearImageRect		@27	;Clear a specified rect in the video memory.
+    JUN_VerticalScroll		@28	;Vertical Scrolling screen.
+    JUN_HorizontalShift 	@29	;Horzontal Shifting screen.
+    JUN_LoadConfiguration	@30	;Load configuration settings from file.
+    JUN_SaveConfiguration	@31	;Save configuration settings to file.
+    JUN_GetProfileInt		@32
+    JUN_GetProfileString	@33
+    JUN_reset_whole_display_color @34
+    JUN_draw_slant_bar		@35
+    JUN_WriteBitmap		@36
+    JUN_WriteBitmap2		@37
+    JUN_WriteBitmap3		@38
+    JUN_WriteBitmap4		@39
+    JUN_SetSystemPalette	@40
+    JUN_GetSystemPalette	@41
+    JUN_ScrollBitmap		@42
+    JUN_get_junior_status	@43
+    JUN_set_whole_display_color @44
+    JUN_flash_video_memory      @45
+    JUN_RetrieveColorKey        @46
+    JUN_ColorentryToRGB         @47
+    JUN_RGBToColorentry         @48
+    JUN_get_color_key           @49
+    JUN_get_display_mode        @50
+    JUN_get_scan_mode           @51
+    JUN_ScrollPages             @52
+    test_vert_sync_int          @53
+    JUN_WriteBitmap5		@54
+    JUN_WriteBitmap6		@55
+    JUN_StartScroll             @56
+    JUN_QuitScroll              @57
+    JUN_LoadObject              @58
+    JUN_WriteBitmap7            @59
+    JUN_Diagnosis               @60
+    JUN_ScrollLines             @61
+    JUN_SEF_FadeInPal           @62
+    JUN_SEF_FadeOutPal          @63
+    JUN_SEF_RotatePal           @64
+    JUN_ShowImage               @65

@@ -1,0 +1,32 @@
+AVer TitleMate DLL Documentation
+컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴컴�
+
+Development Environment:
+   Borland C++ 3.1 for DOS and Windows
+   Microsoft Windows 3.1
+
+File List:
+   JUNIORT.PRJ	  : project file for Borland C++ 3.1.
+   JUNIORA.H	  : header file defines data types, constant, data structure,
+		    and DLL function prototypes declaration.
+   GLOBALA.H	  : global variables
+   EXTERNA.H	  : external variables
+   JUNINITT.C	  : C source code to initialize lib and registers, diagnosis
+		    hardware, allocate selector and memory buffer.
+   JUNREGSA.C	  : C source code to low-level control hardware registers.
+   JUNWBMPA.C	  : C source code to handle video memory read/write and
+		    write bitmap data into video memory.
+   JUNSCOLA.C	  : C source code to handle scroll bitmaps.
+   JUNISRWP.C	  : C source code of ISR to control scrolling continue pages
+		    and interrupt vector set/restore.
+   JUNSHOWA.C	  : C source code to show special effect.
+   DPMI.ASM	  : Assembly source code to allocate/free selctor and far
+		    fast memory copy. Must assemble with TURBO ASSEMBLER.
+   JUNIORA.DEF	  : module definition file of DLL.
+
+Language and Tools
+   Borland C++ 3.1
+   TURBO Assembler 3.0
+   TURBO Debugger 3.0
+   Microsoft Windows SDK
+

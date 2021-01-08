@@ -1,0 +1,22 @@
+; This file is maintained by HCW. Do not modify this file directly.
+
+[OPTIONS]
+COMPRESS=12 Hall Zeck
+DBCS=Yes
+LCID=0x804 0x0 0x0 ; 中文(中国)
+REPORT=Yes
+CHARSET=134
+FTS=3
+TITLE=会议表决系统帮助
+CNT=.\vote.cnt
+COPYRIGHT=%date
+CITATION=会议表决系统帮助
+DEFFONT=宋体,12,134
+INDEX_SEPARATORS=","
+HLP=.\vote.hlp
+
+[FILES]
+.\vote.rtf
+
+[WINDOWS]
+Main="Main window",(526,11,494,996),27908,,(r12632256),f3

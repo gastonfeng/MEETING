@@ -1,0 +1,488 @@
+AVer TitleMate Dynamic Link Library Functions List
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+
+
+Function description:
+
+±Initialization and De-initialization Functions
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_Initialize
+
+ Syntax 	int JUN_Initialize()
+ Parameters	None.
+ Return value	TRUE if success,
+		Error_code if failure.
+ Comments	This function loads configuration information from the
+		initialization file JUNIOR.INI and initializes registers of
+		the TitleMate card. The Error_code is defined in header file
+		JUNIOR.H.
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_Exit
+
+ Syntax 	int JUN_Exit()
+ Parameters	None.
+ Return value
+ Comments	This function frees allocated selector and disables the control
+		to the card. This function should be called while closing the
+		application.
+
+
+±Card-ID Functions
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_set_card_id
+
+ Syntax 	int JUN_set_card_id(card_id)
+ Parameters	BYTE card_id: ID no.(0..F) dedicated for current TitleMate card.
+ Return value	None.
+ Comments	This function sets the desired ID for matching the card's ID.
+		Note! If the ID no. is not identiacl to the value of DIP switch
+		      on the board, then any control to the card will be failed.
+
+
+±Corlor-Key Functions
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_set_color_key
+
+ Syntax 	int JUN_set_color_key(color_key_ramdac_entry)
+ Parameters	BYTE color_key_ramdac_entry: the RAMDAC entry value(0..FF) of
+					     color key.
+ Return value	None.
+ Comments	This function selects one RAMDAC entry value as the color key.
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_get_color_key
+
+ Syntax 	int JUN_set_color_key()
+ Parameters	None.
+ Return value	The color key value.
+ Comments	This function gets the current color key value.
+
+
+±Disply/Scan Mode Functions
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_set_display_mode
+
+ Syntax        int JUN_set_display_mode(display_mode)
+ Parameters    int display_mode: Display mode EXTERNAL_VIDEO_ONLY, and OVERLAY.
+ Return value  None.
+ Comments      This function sets one of the two display modes of the TitleMate.
+
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_get_display_mode
+
+ Syntax        int JUN_set_display_mode()
+ Parameters    None.
+ Return value  The current display mode:
+	       EXTERNAL_VIDEO_ONLY or
+	       OVERLAY.
+ Comments      This function gets the current display mode of the TitleMate.
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_set_scan_mode
+
+ Syntax 	int JUN_set_scan_mode(scan_mode)
+ Parameters	BYTE scan_mode: scan mode of OVERSCAN or UNDERSCAN.
+ Return value	None.
+ Comments	This function sets one of the two scan mode. The resolution of
+		video is depends on TV system type(NTSC/PAL) and the scan mode
+		(OVERSCAN/UNDERSCAN).
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_get_scan_mode
+
+ Syntax 	int JUN_get_scan_mode()
+ Parameters	None.
+ Return value	The current scan mode:
+		OVERSCAN or
+		UNDERSCAN.
+ Comments	This function gets the current scan mode of the TitleMate.
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_set_whole_display_color
+
+ Syntax 	int JUN_set_whole_display_color(red,green,blue)
+ Parameters	BYTE red:   red color value
+		BYTE green: green color value
+		BYTE blue:  blue color value
+ Return value	None.
+ Comments	This function sets the whole display of screen to a certain
+		color. After this function has been called, the display mode
+		of EXTERNAL_VIDEO_ONLY and OVERLAY is in vain. User have to
+		call JUN_reset_whole_display_color to restore original state.
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_reset_whole_display_color
+
+ Syntax 	int JUN_reset_whole_display_color()
+ Parameters	None.
+ Return value	None.
+ Comments	This function resets the whole TV display set by a certain
+		color.
+
+
+±Status Functions
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_external_video_exist
+
+ Syntax 	int JUN_external_video_exist()
+ Parameters	None.
+ Return value	TRUE if external video exist,
+		FALSE otherwise.
+ Comments	This function detects the status of the connection of the
+		external video source.
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_get_TVsystem_type
+
+ Syntax 	int JUN_get_TVsystem_type()
+ Parameters	None.
+ Return value	The types of TV system:
+		NTSC
+		PAL
+ Comments	This function detects the type of TV system(NTSC or PAL).
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_junior_exist
+
+ Syntax 	int JUN_junior_exist()
+ Parameters	None.
+ Return value	TRUE if TitleMate card exists,
+		FALSE otherwise.
+ Comments	This function checks the TitleMate card exists in the slot or
+		not.
+
+
+±RAMDAC Functions
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_init_ramdac_entry
+
+ Syntax 	int JUN_init_ramdac_entry(PALETTEENTRY far *palette)
+ Parameters	PALETTEENTRY far *palette: far pointer to the structure of
+					   logical color palette.
+ Return value	None.
+ Comments	This function initializes all the 256 entries of the RAMDAC.
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_ColorentryToRGB
+
+ Syntax 	long JUN_ColorentryToRGB(color_entry)
+ Parameters	BYTE color_entry: the RAMDAC entry value.
+ Return value	The long integer of RGB value, represented by 0x00rrggbb.
+ Comments	This function returns the corresponding RGB value of the given
+		color entry. Since every color data is 8 bits and there are
+		only 6-bit data of each red, green and blue in the RAMDAC. So,
+		the returned byte value is shifted left by 2 and bitwised OR
+		with 3 to get a 8-bit data.
+
+
+±Interrupt and Polling Functions
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_enable_vert_sync_int
+
+ Syntax 	int JUN_enable_vert_sync_int(flag)
+ Parameters	BOOL flag: TRUE or FALSE.
+ Return value	None.
+ Comments	This function enables or disables the video Vsync interrupt.
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_vert_sync_int_occur
+
+ Syntax 	int JUN_vert_sync_int_occur()
+ Parameters	None.
+ Return value	TRUE if interrupt occurs,
+		FALSE otherwise.
+ Comments	This function gets an interrupt flag about whether a video
+		vertical sync. interrupt occurs.
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_during_vert_sync_period
+
+ Syntax 	int JUN_during_vert_sync_period()
+ Parameters	None.
+ Return value	TRUE if raster scan is during the period of pulse of Vsync.
+		FALSE otherwise.
+ Comments	This function polls the status bit of the video Vsync.
+
+
+±Video Memory(Frame Buffer) Functions
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_flash_video_memory
+
+ Syntax 	int JUN_flash_video_memory(color_entry)
+ Parameters	BYTE color_entry: The RAMDAC entry value(0..FF).
+ Return value	None.
+ Comments	This function clears all the video memory.
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_ReadImageRect
+
+ Syntax 	int JUN_ReadImageRect(xLeft,yTop,xExt,yExt,lpImageBuf)
+ Parameters	UINT xLeft	: left-top X coordinate of rectangle
+		UINT yTop	;    "     Y            "
+		UINT xExt	: width of rectangle
+		UINT yExt	: height of rectangle
+		LPSTR lpImageBuf: far pointer to image buffer
+ Return value	TRUE if success,
+		FALSE if failure.
+ Comments	This function reads a rectangular block of pixels from video
+		memory to the image buffer.
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_WriteImageRect
+
+ Syntax 	int JUN_WriteImageRect(xLeft,yTop,xExt,yExt,lpImageBuf)
+ Parameters	UINT xLeft	: left-top X coordinate of rectangle
+		UINT yTop	:    "     Y            "
+		UINT xExt	: width of rectangle
+		UINT yExt	: height of rectangle
+		LPSTR lpImageBuf: far pointer to image buffer
+ Return value	TRUE if success,
+		FALSE if failure.
+ Comments	This function writes a rectangular block of pixels from image
+		buffer to the video memory.
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_ClearImageRect
+
+ Syntax 	int JUN_ClearImageRect(xLeft,yTop,xExt,yExt,bColorEntry)
+ Parameters	UINT xLeft	: left-top X coordinate of rectangle
+		UINT yTop	;    "     Y            "
+		UINT xExt	: width of rectangle
+		UINT yExt	: height of rectangle
+		BYTE bColorEntry: RAMDAC entry value
+ Return value
+ Comments	This function clears a rectangular area of the video memory to
+		the specified color entry value.
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_WriteBitmap
+
+ Syntax 	int JUN_WriteBitmap(hDC,hPAL,xVramLeft,yVramTop,xDataWidth,
+		    yDataHeight,xDataLeft,yDataTop,xPageWidth,yPageHeight)
+ Parameters	HDC hDC 	: handle of the device context
+		HPALETTE hPAL	: handle of the palette
+		UINT xVramLeft	: start x location of video memory
+		UINT yVramTop	:	y     "
+		UINT xDataWidth : width of the image object in a page
+		UINT yDataHeight: height      "
+		UINT xDataLeft	: left-top X coordinate of the image object
+		UINT yDataTop	:    "     Y            "
+		UINT xPageWidth : width of a page
+		UINT yPageHeight: height   "
+ Return value	TRUE if success,
+		FALSE otherwise.
+ Comments	This function writes the data of a bitmap into video memory of
+		the TitleMate.
+		A page is defined as a screen showed on the display system(TV).
+		It can be seen as a two dimension array which makes up with
+		pixel-united elements. In logically, there are several objects,
+		such as title(text), image(graphics data) in a page. Those
+		objects are processed as bitmaps(a pattern of bits) physically.
+		You can make or create such pages through multi-media
+		authoring tools like PaintBrush, PhotoShop, ImagePales,
+		ProImage, Visual Basic, ... etc.
+		In order to call this function, you must prepare a bitmap data
+		put in device context, a palette handle, the location and size
+		of bitmap in the page, the size of page, and the video memory
+		address for bitmap writed.
+
+
+±Scrolling Functions
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_StartScroll
+
+ Syntax 	int JUN_StartScroll
+ Parameters	None.
+ Return value	None.
+ Comments	This function is a preliminary work of pages scrolling. So it
+		should be called first before the scrolling process start.
+
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_QuitScroll
+
+ Syntax 	int JUN_QuitScroll
+ Parameters	None.
+ Return value	None.
+ Comments	This function is a ending work of pages scrolling. So it should
+		be called after the scrolling process end.
+
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_ScrollPages
+
+ Syntax 	int JUN_ScrollPages(hDC,hPAL,xVramLeft,yVramTop,xDataWidth,
+		    yDataHeight,xDataLeft,yDataTop,xPageWidth,yPageHeight,)
+		    wType, wSpeed)
+ Parameters	HDC hDC 	: handle of the device context
+		HPALETTE hPAL	: handle of the palette
+		UINT xVramLeft	: start x location of video memory
+		UINT yVramTop	:	y     "
+		UINT xDataWidth : width of the image object in a page
+		UINT yDataHeight: height      "
+		UINT xDataLeft	: left-top X coordinate of the image object
+		UINT yDataTop	:    "     Y            "
+		UINT xPageWidth : width of a page
+		UINT yPageHeight: height   "
+		UINT wType	: 4 scroll types:
+				  SCROLL_UP
+				  SCROLL_DOWN
+				  SCROLL_LEFT
+				  SCROLL_RIGHT
+		UINT wSpeed	: unit of speed to do scrolling:
+				  1: the slowest speed(defalut)
+				  2
+ Return value	TRUE if success,
+		FALSE otherwise.
+ Comments	This function scrolls the continue pages.
+
+
+For the purpose of scrolling continue pages, there are some notes should be
+noticed:
+1. The process of handling scroll is as follows:
+   /* 1. Preliminary before scrolling */
+   JUN_StartScroll();
+   /* 2. Scrolling pages */
+   while ( ! EndFlag ) {
+      ......
+      load a desired page
+      ......
+      JUN_ScrollPages(....);
+   }
+   /* 3. End scrolling */
+   JUN_QuitScroll();
+2. The scroll process is implemented by using ISR(Interrupt Service Routine).
+   So, the calling process and the ISR process can be run in concurrent.
+3. In order to achieve smooth scrolling between each pages, we suggest that the
+   contents of scrolled page are consist of titles only, so the time to
+   prepare the next new page while scrolling is as little as possible.
+   Otherwise, the process has to be wait for the next new page loaded completely
+   after the current page has been scrolled in the screen.
+
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_ScrollBitmap
+
+ Syntax 	int JUN_ScrollBitmap(hDC,hPAL,xVramLeft,yVramTop,xDataWidth,
+		    yDataHeight,xDataLeft,yDataTop,xPageWidth,yPageHeight,)
+		    wType, wSpeed)
+ Parameters	HDC hDC 	: handle of the device context
+		HPALETTE hPAL	: handle of the palette
+		UINT xVramLeft	: start x location of video memory
+		UINT yVramTop	:	y     "
+		UINT xDataWidth : width of the image object in a page
+		UINT yDataHeight: height      "
+		UINT xDataLeft	: left-top X coordinate of the image object
+		UINT yDataTop	:    "     Y            "
+		UINT xPageWidth : width of a page
+		UINT yPageHeight: height   "
+		UINT wType	: 4 scroll types:
+				  SCROLL_UP
+				  SCROLL_DOWN
+				  SCROLL_LEFT
+				  SCROLL_RIGHT
+		UINT wSpeed	: unit of speed to do scrolling:
+				  1: the slowest speed(defalut)
+				  2,
+				  3,
+				  4:fastest
+ Return value	TRUE if success,
+		FALSE otherwise.
+ Comments	This function scrolls the bitmap in a pages. It also can be
+		seen as the style to show a bitmap in the screen.
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_ScrollLines
+
+ Syntax 	int JUN_ScrollLines(wTypes,wSpeed,wAmount)
+ Parameters	int wTypes	: 4 scroll types:
+				  SCROLL_UP
+				  SCROLL_DOWN
+				  SCROLL_LEFT
+				  SCROLL_RIGHT
+		int wSpeed	: unit of speed to do scrolling:
+				  1: the slowest speed(defalut)
+				  2,
+				  3,
+				  4:fastest
+		int wAmount	: lines to scroll
+ Return value	TRUE if success,
+		FALSE otherwise.
+ Comments	This function scrolls line by line in the video memory.
+
+
+±Graphics Functions
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_draw_point
+
+ Syntax 	int JUN_draw_point(x, y, color_entry)
+ Parameters	UINT x: 	  x part of coordinate in video memory
+		UINT y: 	  y	       "
+		BYTE color_entry: color RAMDAC entry value
+ Return value	None
+ Comments	This function draws a point in video memory.
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_draw_line
+
+ Syntax 	int JUN_draw_line(x1, y1, x2, y2, color_entry)
+ Parameters	UINT (x1,y1):	  start point coordinate in video memory
+		UINT (x2,y2):	  end		    "
+		BYTE color_entry: color RAMDAC entry value
+ Return value	None
+ Comments	This function draws a line from the start point up to the end
+		point in video memory.
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_draw_circle
+
+ Syntax 	int JUN_draw_circle(x, y, radius, color_entry, fill_flag)
+ Parameters	UINT (x, y):	  center point of the circle in video memory
+		UINT radius:	  radius of the circle
+		BYTE color_entry: color RAMDAC entry value
+		UINT fill_flag:   TRUE to fill the interior of circle, or
+				  FALSE to draw border only.
+ Return value	None
+ Comments	This function draws a circle in video memory.
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_draw_ellipse
+
+ Syntax 	int JUN_draw_ellipse(x,y,xradius,yradius,color_entry,fill_flag)
+ Parameters	UINT (x, y):	  center point of the ellipse in video memory
+		UINT xradius:	  radius in x direction
+		UINT yradius:	  radius in y direction
+		BYTE color_entry: color RAMDAC entry value
+		UINT fill_flag:   TRUE to fill the interior of circle, or
+				  FALSE to draw border only.
+ Return value	None
+ Comments	This function draws a ellipse in video memory.
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_draw_rect
+
+ Syntax 	int JUN_draw_rect(x, y, width, height, color_entry, fill_flag)
+ Parameters	UINT x: 	  x part of coordinate in video memory
+		UINT y: 	  y	       "
+		UINT width:	  width of rectangle
+		UINT height:	  height of rectangle
+		BYTE color_entry: color RAMDAC entry value
+		UINT fill_flag:   TRUE to fill the interior of rectangle, or
+				  FALSE to draw border only.
+ Return value	None
+ Comments	This function draws a rectangle in video memory.
+
+ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ
+JUN_draw_color_bar
+
+ Syntax 	int JUN_draw_color_bar(pitch, color_no, color_entry)
+ Parameters	UINT pitch:	    width of one bar
+		UINT color_no:	    available color number
+		BYTE color_entry[]: array of color entry value
+ Return value	None
+ Comments	This function draws color bars in video memory.
+
+
+

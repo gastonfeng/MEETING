@@ -1,0 +1,108 @@
+BL51 BANKED LINKER/LOCATER V4.03                                                        08/09/2001  13:38:20  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V4.03, INVOKED BY:
+C:\KEIL\C51\BIN\BL51.EXE CLIENT.obj TO voter
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  CLIENT.obj (CLIENT)
+  C:\KEIL\C51\LIB\C51S.LIB (?C_STARTUP)
+  C:\KEIL\C51\LIB\C51S.LIB (?C?CCASE)
+
+
+LINK MAP OF MODULE:  voter (CLIENT)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0007H     UNIT         ?DT?_WRITE_EPROM?CLIENT
+            DATA    000FH     0001H     UNIT         ?DT?GETCH?CLIENT
+            REG     0010H     0008H     ABSOLUTE     "REG BANK 2"
+            DATA    0018H     0005H     UNIT         ?DT?_SET_EPROM?CLIENT
+            DATA    001DH     0003H     UNIT         ?DT?MAIN?CLIENT
+            BIT     0020H.0   0000H.2   UNIT         ?BI?CLIENT
+                    0020H.2   0000H.6                *** GAP ***
+            DATA    0021H     000AH     UNIT         ?DT?CLIENT
+            DATA    002BH     0005H     UNIT         ?DT?_EPROM?CLIENT
+            DATA    0030H     0002H     UNIT         ?DT?_TDELAY?CLIENT
+            DATA    0032H     0001H     UNIT         ?DT?_SEND?CLIENT
+            IDATA   0033H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+            CODE    0003H     001CH     INBLOCK      ?PR?_TDELAY?CLIENT
+                    001FH     0004H                  *** GAP ***
+            CODE    0023H     0002H     ABSOLUTE     
+            CODE    0025H     01B6H     INBLOCK      ?PR?MAIN?CLIENT
+            CODE    01DBH     009DH     INBLOCK      ?PR?_WRITE_EPROM?CLIENT
+            CODE    0278H     0092H     INBLOCK      ?PR?GETNUMBER?CLIENT
+            CODE    030AH     0091H     INBLOCK      ?PR?_EPROM?CLIENT
+            CODE    039BH     006FH     INBLOCK      ?PR?_SET_EPROM?CLIENT
+            CODE    040AH     004CH     INBLOCK      ?PR?SERIAL?CLIENT
+            CODE    0456H     0026H     UNIT         ?C?LIB_CODE
+            CODE    047CH     0021H     INBLOCK      ?PR?GETCH?CLIENT
+            CODE    049DH     000CH     UNIT         ?C_C51STARTUP
+            CODE    04A9H     000BH     INBLOCK      ?PR?_SEND?CLIENT
+            CODE    04B4H     0005H     INBLOCK      ?PR?DELAY?CLIENT
+
+
+
+OVERLAY MAP OF MODULE:   voter (CLIENT)
+
+
+SEGMENT
+  +--> CALLED SEGMENT
+BL51 BANKED LINKER/LOCATER V4.03                                                      08/09/2001  13:38:20  PAGE 2
+
+
+---------------------
+?C_C51STARTUP
+  +--> ?PR?MAIN?CLIENT
+
+?PR?MAIN?CLIENT
+  +--> ?PR?_EPROM?CLIENT
+  +--> ?PR?GETNUMBER?CLIENT
+  +--> ?PR?_TDELAY?CLIENT
+  +--> ?PR?_SEND?CLIENT
+  +--> ?PR?GETCH?CLIENT
+  +--> ?PR?_WRITE_EPROM?CLIENT
+
+?PR?_EPROM?CLIENT
+  +--> ?PR?DELAY?CLIENT
+
+?PR?GETNUMBER?CLIENT
+  +--> ?PR?GETCH?CLIENT
+  +--> ?PR?_TDELAY?CLIENT
+  +--> ?PR?_SEND?CLIENT
+  +--> ?PR?_WRITE_EPROM?CLIENT
+  +--> ?PR?_EPROM?CLIENT
+
+?PR?GETCH?CLIENT
+  +--> ?PR?_TDELAY?CLIENT
+
+?PR?_WRITE_EPROM?CLIENT
+  +--> ?PR?_SET_EPROM?CLIENT
+  +--> ?PR?DELAY?CLIENT
+
+?PR?_SET_EPROM?CLIENT
+  +--> ?PR?DELAY?CLIENT
+
+
+
+SYMBOL TABLE OF MODULE:  voter (CLIENT)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C?CCASE
+  C:0456H         PUBLIC        ?C?CCASE
+  -------         ENDMOD        ?C?CCASE
+
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

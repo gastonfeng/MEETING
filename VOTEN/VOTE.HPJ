@@ -1,0 +1,33 @@
+; This file is maintained by WHD. Do not modify this file directly.
+;
+; This help project was created with Windows Help Designer V 2.1.6.2
+; Windows Help Designer is copyright (C) 1996, 1997, by Nick Ameladiotis
+; Visit http://www.devgr.com for more informations
+;
+[OPTIONS]
+REPORT=Yes
+ERRORLOG=E:\meeting\voten\vote.LOG
+COMPRESS=HIGH
+HLP=.\vote.hlp
+COPYRIGHT=%date
+TITLE=会议表决系统帮助
+
+[WINDOWS]
+Main="Main window", (518,11,746,1126), 0,(255,255,255),(192,192,192),0  ; 
+
+[FILES]
+vote.rtf
+
+[MAP]
+Topic8=0x8
+1234=0x12
+Topic1=0x1
+Topic5=0x5
+______=0xC
+------=0x2
+Topic7=0x7
+________=0xA
+Topic11=0xB
+Topic25=0x19
+Topic27=0x1B
+Topic28=0x1C

@@ -1,0 +1,10 @@
+[IDTables]
+TableName=E:\meeting\voten\vote.gpd
+
+[Procedures]
+ProcSize=1
+
+[Performance]
+ProfilingAutostart=1
+CompressTicks=0
+CompressThreads=0

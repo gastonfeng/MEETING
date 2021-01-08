@@ -1,0 +1,443 @@
+C51 COMPILER V6.10  CLIENT                                                                 08/09/2001 13:38:19 PAGE 1   
+
+
+C51 COMPILER V6.10, COMPILATION OF MODULE CLIENT
+OBJECT MODULE PLACED IN .\CLIENT.OBJ
+COMPILER INVOKED BY: C:\KEIL\C51\BIN\C51.EXE .\CLIENT.C ROM(SMALL) OPTIMIZE(0,SPEED) ORDER
+
+stmt level    source
+
+   1          /*======================*/
+   2          /*	File NAme:CLIENT.C	*/
+   3          /*	1999.3.18			*/
+   4          /*======================*/
+   5          #include<reg51.H>
+   6          
+   7          /*----------------------*/
+   8          /*      EPROM操作代码   */
+   9          /*----------------------*/
+  10          #define EWEN    0x0100
+  11          #define EWDS    0
+  12          #define ERAL    0x0300
+  13          #define ERASE   0x0200
+  14          
+  15          #define REGREQU	'R'
+  16          sbit BAODAO=P1^4;
+  17          sbit QIQUAN=P1^5;
+  18          sbit FANDUI=P1^6;
+  19          sbit ZANCHENG=P1^7;
+  20          sbit senable=P3^7;
+  21          sbit cs=P3^5;
+  22          sbit Do=P3^2;
+  23          sbit di=P3^3;
+  24          sbit clk=P3^4;
+  25          
+  26          bit received;
+  27          
+  28          unsigned char buf[4],local;
+  29          
+  30          void tdelay(unsigned char time)
+  31          {
+  32   1      	unsigned char i;
+  33   1      	for(;time>0;time--){
+  34   2      		for(i=0;i<115;i++);
+  35   2      	}
+  36   1      }
+  37          
+  38          DELAY()
+  39          {
+  40   1          clk=1;
+  41   1          clk=0;
+  42   1      }
+  43           
+  44          /*----------------------*/
+  45          /*  EPROM设置及擦除程序 */
+  46          /*  command=00H,EWDS  */
+  47          /*  command=01H,EWEN  */
+  48          /*----------------------*/
+  49          void set_eprom(int command)
+  50          {
+  51   1          char k;
+  52   1          union a{
+  53   1              int com;
+  54   1              char opr[2];
+  55   1          }set;
+C51 COMPILER V6.10  CLIENT                                                                 08/09/2001 13:38:19 PAGE 2   
+
+  56   1          set.com=command;
+  57   1          cs=clk=di=0;
+  58   1          Do=1;
+  59   1          cs=1;
+  60   1          while(!Do);
+  61   1          di=1;
+  62   1          DELAY();
+  63   1          switch(set.opr[0]){
+  64   2              case 0:{
+  65   3                  set.opr[1]=0;
+  66   3                  break;
+  67   3              }
+  68   2              case 1:{
+  69   3                  set.opr[1]=0x30;
+  70   3                  break;
+  71   3              }
+  72   2              case 2:{
+  73   3                  set.opr[1]|=0xc0;
+  74   3                  break;
+  75   3              }
+  76   2              case 3:{
+  77   3                  set.opr[1]=0x20;
+  78   3                  break;
+  79   3              }
+  80   2          }
+  81   1          for(k=0;k<8;k++){
+  82   2              di=set.opr[1]>>7;
+  83   2              DELAY();
+  84   2              set.opr[1]<<=1;
+  85   2          }
+  86   1          cs=clk=di=0;
+  87   1      }
+  88          
+  89          /*--------------------------*/
+  90          /*  EPROM写入程序           */
+  91          /*  address=-1,写整个芯片   */
+  92          /*  address<256,写单个数据  */
+  93          /*--------------------------*/
+  94          void write_eprom(int address,int Data)
+  95          {
+  96   1          union a{
+  97   1              int i;
+  98   1              char addr[2];
+  99   1          }b;
+ 100   1          char k;
+ 101   1          set_eprom(EWEN);
+ 102   1          b.i=address;
+ 103   1          cs=clk=di=0;
+ 104   1          Do=1;
+ 105   1          cs=1;
+ 106   1          while(!Do);
+ 107   1          di=1;
+ 108   1          DELAY();
+ 109   1          if(address==-1){
+ 110   2                  b.addr[1]=0x10;
+ 111   2              }
+ 112   1              else{
+ 113   2                  b.addr[1]|=0x40;
+ 114   2              }
+ 115   1          for(k=0;k<8;k++){
+ 116   2              di=b.addr[1]>>7;
+ 117   2              DELAY();
+C51 COMPILER V6.10  CLIENT                                                                 08/09/2001 13:38:19 PAGE 3   
+
+ 118   2              b.addr[1]<<=1;
+ 119   2          }
+ 120   1          for(k=0;k<16;k++){
+ 121   2              di=Data>>15;
+ 122   2              DELAY();
+ 123   2              Data<<=1;
+ 124   2          }
+ 125   1          cs=clk=di=0;
+ 126   1          set_eprom(EWDS);
+ 127   1      }
+ 128          
+ 129          /*------------------*/
+ 130          /*  EPROM读出程序   */
+ 131          /*------------------*/
+ 132          int eprom(char address)
+ 133          {
+ 134   1          char k,i;
+ 135   1          int result;
+ 136   1          address|=0x80;
+ 137   1          for(i=0;i<10;i++){
+ 138   2              cs=clk=di=0;
+ 139   2              Do=1;
+ 140   2              cs=1;
+ 141   2              while(!Do);
+ 142   2              cs=1;
+ 143   2              di=1;
+ 144   2              DELAY();
+ 145   2              for(k=0;k<8;k++){
+ 146   3                  di=address>>7;
+ 147   3                  DELAY();
+ 148   3                  address<<=1;
+ 149   3              }
+ 150   2              if(Do==0)goto OK;
+ 151   2          }
+ 152   1          cs=clk=di=0;
+ 153   1          return -1;
+ 154   1      OK:
+ 155   1          for(k=0;k<16;k++){
+ 156   2              result<<=1;
+ 157   2              DELAY();
+ 158   2              result=result|Do;
+ 159   2          }
+ 160   1          cs=clk=di=0;
+ 161   1          return result;
+ 162   1      }
+ 163          
+ 164          unsigned char getch()
+ 165          {
+ 166   1          unsigned char j;
+ 167   1          j=P1&0xf;
+ 168   1          if(j==0xf)return 0xff;
+ 169   1          tdelay(20);
+ 170   1          if(j==(P1&0xf)){
+ 171   2              return j;
+ 172   2          }
+ 173   1          return 0xff;
+ 174   1      }
+ 175          
+ 176          void serial() interrupt 4 using 2
+ 177          {
+ 178   1          static unsigned char ibuf[4],ipoint;
+ 179   1          static bit rec;
+C51 COMPILER V6.10  CLIENT                                                                 08/09/2001 13:38:19 PAGE 4   
+
+ 180   1      /*    unsigned char i;*/
+ 181   1      	if(RI){
+ 182   2      		RI=0;
+ 183   2      		if(SBUF==0xaa){
+ 184   3      			ipoint=0;
+ 185   3      			rec=0;
+ 186   3      		}
+ 187   2      		if(!rec){
+ 188   3      			ibuf[ipoint]=SBUF;
+ 189   3      			ipoint++;
+ 190   3      			if(ipoint>=4){
+ 191   4      				if(ibuf[3]==0xcc){
+ 192   5      					buf[1]=ibuf[1];
+ 193   5      					buf[2]=ibuf[2];
+ 194   5      					received=1;
+ 195   5      					ipoint=0;
+ 196   5      					rec=1;
+ 197   5      				}
+ 198   4      				else{
+ 199   5      					ipoint=0;
+ 200   5      				}
+ 201   4      			}
+ 202   3      	    }
+ 203   2      	}
+ 204   1          else{
+ 205   2          	senable=0;
+ 206   2          	TI=0;
+ 207   2          }
+ 208   1      }
+ 209          
+ 210          send(unsigned char cc)
+ 211          {
+ 212   1      	while(senable);
+ 213   1      	senable=1;
+ 214   1      	SBUF=cc;
+ 215   1      }
+ 216          
+ 217          getnumber(){	
+ 218   1      	while(getch()==0xff){
+ 219   2      		QIQUAN=1;
+ 220   2      		tdelay(50);
+ 221   2      		QIQUAN=0;
+ 222   2      		tdelay(50);
+ 223   2      	}
+ 224   1      	while(1){
+ 225   2      		send(0xaa);
+ 226   2      		send(REGREQU);
+ 227   2      		send(REGREQU);
+ 228   2      		send(0xbb);
+ 229   2      		QIQUAN=~QIQUAN;
+ 230   2      		tdelay(200);
+ 231   2      		if(received){
+ 232   3      			received=0;
+ 233   3      			if(buf[1]==buf[2]){
+ 234   4      				local=buf[1];
+ 235   4      				send(0xaa);
+ 236   4      				send(local);
+ 237   4      				send(0xdd);
+ 238   4      				send(0xbb);
+ 239   4      				write_eprom(10,local);
+ 240   4      				write_eprom(50,local);
+ 241   4      				local=buf[1];
+C51 COMPILER V6.10  CLIENT                                                                 08/09/2001 13:38:19 PAGE 5   
+
+ 242   4      				if(eprom(10)!=local || eprom(50)!=local){
+ 243   5      					QIQUAN=1;
+ 244   5      					ZANCHENG=1;
+ 245   5      					FANDUI=1;
+ 246   5      					BAODAO=1;
+ 247   5      					while(1);
+ 248   5      				}
+ 249   4      				QIQUAN=0;
+ 250   4      				break;
+ 251   4      			}
+ 252   3      		}
+ 253   2      	}
+ 254   1      }
+ 255                             	
+ 256          void main()
+ 257          {
+ 258   1      	unsigned char status,i,work;
+ 259   1      	BAODAO=QIQUAN=FANDUI=ZANCHENG=0;
+ 260   1      	work=0;
+ 261   1      	received=0;
+ 262   1      	senable=0;
+ 263   1      	status='N';
+ 264   1      	local=eprom(10);
+ 265   1      	SCON=0x50;
+ 266   1      	PCON=0;
+ 267   1      	TMOD=0x20;
+ 268   1      	TH1=0xe8;
+ 269   1      	IE=0x90;
+ 270   1      	TR1=1;
+ 271   1      	if(local!=eprom(50)){
+ 272   2      		getnumber();
+ 273   2      	}
+ 274   1      	else{
+ 275   2      		BAODAO=1;
+ 276   2      		tdelay(200);
+ 277   2      		BAODAO=0;
+ 278   2      		QIQUAN=1;
+ 279   2      		tdelay(200);
+ 280   2      		QIQUAN=0;
+ 281   2      		FANDUI=1;
+ 282   2      		tdelay(200);
+ 283   2      		FANDUI=0;
+ 284   2      		ZANCHENG=1;
+ 285   2      		tdelay(200);
+ 286   2      	}
+ 287   1      	BAODAO=QIQUAN=FANDUI=ZANCHENG=0;
+ 288   1      	while(1){
+ 289   2      		if(received){
+ 290   3      			received=0;
+ 291   3      			if(buf[1]==local){
+ 292   4      				switch(buf[2]){
+ 293   5      					case 0xc0:{
+ 294   6      						send(0xaa);
+ 295   6      						send(local);
+ 296   6      						send(0xc1);
+ 297   6      						send(0xbb);
+ 298   6      						BAODAO=1;
+ 299   6      						tdelay(200);
+ 300   6      						BAODAO=0;
+ 301   6      						QIQUAN=1;
+ 302   6      						tdelay(200);
+ 303   6      						QIQUAN=0;
+C51 COMPILER V6.10  CLIENT                                                                 08/09/2001 13:38:19 PAGE 6   
+
+ 304   6      						FANDUI=1;
+ 305   6      						tdelay(200);
+ 306   6      						FANDUI=0;
+ 307   6      						ZANCHENG=1;
+ 308   6      						tdelay(200);
+ 309   6      						ZANCHENG=0;
+ 310   6      						break;
+ 311   6      					}
+ 312   5      					case 0xd0:{
+ 313   6      						send(0xaa);
+ 314   6      						send(local);
+ 315   6      						send(status);
+ 316   6      						send(0xbb);
+ 317   6      						status='N';
+ 318   6      						work=0;
+ 319   6      						BAODAO=QIQUAN=FANDUI=ZANCHENG=0;
+ 320   6      		            	break;
+ 321   6      					}
+ 322   5      					default:;
+ 323   5      				}
+ 324   4      			}
+ 325   3      			if(buf[1]==0xee){
+ 326   4      				switch(buf[2]){
+ 327   5      					case 'C':{
+ 328   6      						status='N';
+ 329   6      						BAODAO=QIQUAN=FANDUI=ZANCHENG=0;
+ 330   6      						work=1;
+ 331   6      						break;
+ 332   6      					}
+ 333   5      					case 'B':{
+ 334   6      						work=2;
+ 335   6      						BAODAO=QIQUAN=FANDUI=ZANCHENG=0;
+ 336   6      						status='N';
+ 337   6      						break;
+ 338   6      					}
+ 339   5      					case 'D':{
+ 340   6      						work=0;
+ 341   6      						BAODAO=QIQUAN=FANDUI=ZANCHENG=0;
+ 342   6      						status='N';
+ 343   6      						break;
+ 344   6      					}
+ 345   5      					case 0xe0:{
+ 346   6      						getnumber();
+ 347   6      						break;
+ 348   6      					}
+ 349   5      					default:;
+ 350   5      				}
+ 351   4      			}
+ 352   3      		}
+ 353   2      		switch(getch()){
+ 354   3      			case 0x7:{
+ 355   4      				if(work==1){
+ 356   5      					status='0';
+ 357   5      					BAODAO=1;
+ 358   5      					QIQUAN=0;
+ 359   5      					FANDUI=0;
+ 360   5      					ZANCHENG=0;
+ 361   5      				}
+ 362   4      				break;
+ 363   4      			}			
+ 364   3      			case 0xb:{
+ 365   4      				if(work==2){
+C51 COMPILER V6.10  CLIENT                                                                 08/09/2001 13:38:19 PAGE 7   
+
+ 366   5      					status='1';
+ 367   5      					BAODAO=0;
+ 368   5      					QIQUAN=1;
+ 369   5      					FANDUI=0;
+ 370   5      					ZANCHENG=0;
+ 371   5      				}
+ 372   4      				break;
+ 373   4      			}
+ 374   3      			case 0xd:{
+ 375   4      				if(work==2){
+ 376   5      					status='2';
+ 377   5      					BAODAO=0;
+ 378   5      					QIQUAN=0;
+ 379   5      					FANDUI=1;
+ 380   5      					ZANCHENG=0;
+ 381   5      				}
+ 382   4      				break;
+ 383   4      			}
+ 384   3      			case 0xe:{
+ 385   4      				if(work==2){
+ 386   5      					status='3';
+ 387   5      					BAODAO=0;
+ 388   5      					QIQUAN=0;
+ 389   5      					FANDUI=0;
+ 390   5      					ZANCHENG=1;
+ 391   5      				}
+ 392   4      				break;
+ 393   4      			}
+ 394   3      			case 0:{
+ 395   4      				for(i=0;i<100;i++){
+ 396   5      					if(getch()!=0)break;
+ 397   5      					tdelay(10);
+ 398   5      				}
+ 399   4      				if(i==100){
+ 400   5      					write_eprom(10,0xff);
+ 401   5      					getnumber();
+ 402   5      				}
+ 403   4      				break;
+ 404   4      			}
+ 405   3      			default:;
+ 406   3      		}
+ 407   2      	}
+ 408   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1150    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     34    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =      2    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
